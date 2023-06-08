@@ -7,12 +7,14 @@ services:
       - './wwwlogs:/wwwlogs'
       - './caddy.conf:/run/caddy/caddy.conf'
       - './supervisord.conf:/run/supervisor/supervisord.conf'
+      - './susu.conf:/etc/supervisor/conf.d/supervisord.conf'
       - './crontabs.conf:/etc/crontabs/root'
       - './.caddy:/root/.caddy'
     ports:
-      - '80:80'
-      - '443:443'
+      - '8081:80'
     restart: always
+    networks:
+      - v2b
   mysql:
     image: mysql:5.7.29
     volumes:
@@ -21,3 +23,8 @@ services:
     environment: 
       MYSQL_ROOT_PASSWORD: v2boardisbest
       MYSQL_DATABASE: v2board
+    networks:
+      - v2b
+networks:
+  v2b:
+    driver: bridge
